@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 27, 2023 at 01:30 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jan 02, 2024 at 04:46 PM
+-- Server version: 10.4.24-MariaDB
+-- PHP Version: 8.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,18 +29,37 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `daftar_poli` (
   `id` int(11) NOT NULL,
-  `id_pasien` int(11) NOT NULL,
+  `no_rm` varchar(25) NOT NULL,
+  `poli` varchar(25) NOT NULL,
   `id_jadwal` int(11) NOT NULL,
   `keluhan` text NOT NULL,
   `no_antrian` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `daftar_poli`
 --
 
-INSERT INTO `daftar_poli` (`id`, `id_pasien`, `id_jadwal`, `keluhan`, `no_antrian`) VALUES
-(1, 1, 1, 'covid  ', 1);
+INSERT INTO `daftar_poli` (`id`, `no_rm`, `poli`, `id_jadwal`, `keluhan`, `no_antrian`) VALUES
+(1, '', '', 1, 'Sakarotul Maut', 1),
+(2, '202312-001', '1', 1, 'Anak Saya Sehat Wal Afiat', 2),
+(3, '202312-001', '2', 1, 'Terima Bedah dan Terima Kasih', 3);
+
+--
+-- Triggers `daftar_poli`
+--
+DELIMITER $$
+CREATE TRIGGER `no_antrian` BEFORE INSERT ON `daftar_poli` FOR EACH ROW BEGIN
+    DECLARE max_antrian INT;
+
+    -- Ambil nilai maksimum dari kolom no_antrian
+    SELECT COALESCE(MAX(no_antrian), 0) INTO max_antrian FROM daftar_poli;
+
+    -- Set nilai no_antrian untuk record baru
+    SET NEW.no_antrian = max_antrian + 1;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -52,7 +71,7 @@ CREATE TABLE `detail_periksa` (
   `id` int(50) NOT NULL,
   `id_periksa` int(50) NOT NULL,
   `id_obat` int(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -66,15 +85,15 @@ CREATE TABLE `dokter` (
   `alamat` varchar(255) NOT NULL,
   `no_hp` varchar(255) NOT NULL,
   `id_poli` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `dokter`
 --
 
 INSERT INTO `dokter` (`id_dokter`, `nama`, `alamat`, `no_hp`, `id_poli`) VALUES
-(2, 'adi', 'semarang', '08773920129', 2),
-(4, 'Rudi', 'semarang', '087789291821', 1);
+(2, 'Wahyoudie', 'Pemalang', '089876543210', 2),
+(4, 'Bambang Pacoel', 'Semarang', '089876543210', 1);
 
 -- --------------------------------------------------------
 
@@ -88,14 +107,14 @@ CREATE TABLE `jadwal_periksa` (
   `hari` enum('Senin','Selasa','Rabu','Kamis','Jumat','Sabtu') NOT NULL,
   `jam_mulai` time NOT NULL,
   `jam_selesai` time NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `jadwal_periksa`
 --
 
 INSERT INTO `jadwal_periksa` (`id`, `id_dokter`, `hari`, `jam_mulai`, `jam_selesai`) VALUES
-(1, 2, 'Rabu', '00:00:00', '23:59:00');
+(1, 2, 'Senin', '00:00:00', '23:59:00');
 
 -- --------------------------------------------------------
 
@@ -105,19 +124,19 @@ INSERT INTO `jadwal_periksa` (`id`, `id_dokter`, `hari`, `jam_mulai`, `jam_seles
 
 CREATE TABLE `obat` (
   `id` int(11) NOT NULL,
-  `nama_obat` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `kemasan` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `nama_obat` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `kemasan` varchar(50) CHARACTER SET latin1 NOT NULL,
   `harga` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `obat`
 --
 
 INSERT INTO `obat` (`id`, `nama_obat`, `kemasan`, `harga`) VALUES
-(3, 'Dexamethasone', 'tablet', 20000),
-(4, 'Sucralfate', 'syrup', 25000),
-(5, 'Amodipine', 'tablet', 5500);
+(3, 'Paracetamol', 'tablet', 20000),
+(4, 'Mylanta', 'syrup', 25000),
+(5, 'Ibuprofen', 'tablet', 10000);
 
 -- --------------------------------------------------------
 
@@ -132,14 +151,39 @@ CREATE TABLE `pasien` (
   `no_ktp` varchar(255) NOT NULL,
   `no_hp` varchar(50) NOT NULL,
   `no_rm` varchar(25) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `pasien`
 --
 
 INSERT INTO `pasien` (`id`, `nama`, `alamat`, `no_ktp`, `no_hp`, `no_rm`) VALUES
-(1, 'budi', 'semarang', '2214018429239901', '08921182992', '202312-001');
+(1, 'Mariyadi', 'Hogward', '3315033112020001', '081234567890', '202312-001'),
+(2, 'Bagus', 'Pekalongan', '3315031203040005', '089876543210', '202401-002'),
+(3, 'Agus', 'Semarang', '3315031307050003', '081234567890', '202401-003'),
+(4, 'Solikin', 'Kendal', '3315031707070007', '082315254256', '202401-004');
+
+--
+-- Triggers `pasien`
+--
+DELIMITER $$
+CREATE TRIGGER `no_rm` BEFORE INSERT ON `pasien` FOR EACH ROW BEGIN
+    DECLARE id INT;
+    DECLARE formatted_no_rm VARCHAR(20);
+
+    -- Ambil ID baru yang akan di-insert
+    SELECT AUTO_INCREMENT INTO id
+    FROM information_schema.tables
+    WHERE table_name = 'pasien' AND table_schema = DATABASE();
+
+    -- Format nomor rekam medis sesuai 'yyyymm-auto_increment'
+    SET formatted_no_rm = CONCAT(DATE_FORMAT(NOW(), '%Y%m'), '-', LPAD(id, 3, '0'));
+
+    -- Setel nilai nomor rekam medis yang diformat ke kolom nomor_rm sebelum INSERT
+    SET NEW.no_rm = formatted_no_rm;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -157,14 +201,14 @@ CREATE TABLE `periksa` (
   `catatan` text NOT NULL,
   `obat` varchar(1000) NOT NULL,
   `biaya_periksa` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `periksa`
 --
 
 INSERT INTO `periksa` (`id`, `id_poli`, `tgl_periksa`, `nama_pasien`, `keluhan`, `nama_dokter`, `catatan`, `obat`, `biaya_periksa`) VALUES
-(2, 1, '2023-12-27 08:52:37', 'budi', 'Besok Meninggal', 'adi', 'Besok Mau Meninggal, Suntik Mati Saja', 'Sianida 2x Sehari, Dihabiskan', 1000000);
+(2, 1, '2023-12-27 08:52:37', 'Mariyadi', 'Besok Meninggal', 'Wahyoudie', 'Sepertinya Sudah Tidak Tertolong', 'Potasium Nitrate 3x sehari, Dihabiskan', 10000000);
 
 -- --------------------------------------------------------
 
@@ -176,14 +220,14 @@ CREATE TABLE `poli` (
   `id` int(11) NOT NULL,
   `nama_poli` varchar(25) NOT NULL,
   `keterangan` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `poli`
 --
 
 INSERT INTO `poli` (`id`, `nama_poli`, `keterangan`) VALUES
-(1, 'Anak', 'Klinik Untuk Menangani Masalah Kesehatan Pada Anak'),
+(1, 'Anak', 'Untuk Anak-anak'),
 (2, 'Bedah', 'Terima Bedah dan Terima Kasih');
 
 -- --------------------------------------------------------
@@ -198,16 +242,15 @@ CREATE TABLE `user` (
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `role` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `nama`, `username`, `password`, `role`) VALUES
-(1, '', 'admin', '89ccfac87d8d06db06bf3211cb2d69ed', 'admin'),
-(3, 'joko', 'joko', '89ccfac87d8d06db06bf3211cb2d69ed', 'admin'),
-(4, 'budi', 'budi', '48ec8af8df4bf4347d9b1de4ee7bb092', 'dokter');
+(3, 'ane', 'ane', '6c7be0759b9fe15878dbd4cd7c5d0d84', 'admin'),
+(4, 'ente', 'ente', 'c8bd0177e53c5d2fec5d7e8cba43c505', 'dokter');
 
 --
 -- Indexes for dumped tables
@@ -218,8 +261,9 @@ INSERT INTO `user` (`id`, `nama`, `username`, `password`, `role`) VALUES
 --
 ALTER TABLE `daftar_poli`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_pasien_daftar_poli` (`id_pasien`),
-  ADD KEY `fk_jadwal_periksa_detail_periksa` (`id_jadwal`);
+  ADD KEY `no_rm` (`no_rm`) USING BTREE,
+  ADD KEY `id_jadwal` (`id_jadwal`),
+  ADD KEY `poli` (`poli`);
 
 --
 -- Indexes for table `detail_periksa`
@@ -255,6 +299,7 @@ ALTER TABLE `obat`
 --
 ALTER TABLE `pasien`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `no_rm` (`no_rm`) USING BTREE,
   ADD KEY `nama` (`nama`),
   ADD KEY `nama_2` (`nama`);
 
@@ -287,7 +332,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `daftar_poli`
 --
 ALTER TABLE `daftar_poli`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `detail_periksa`
@@ -317,7 +362,7 @@ ALTER TABLE `obat`
 -- AUTO_INCREMENT for table `pasien`
 --
 ALTER TABLE `pasien`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `periksa`
@@ -345,8 +390,7 @@ ALTER TABLE `user`
 -- Constraints for table `daftar_poli`
 --
 ALTER TABLE `daftar_poli`
-  ADD CONSTRAINT `fk_jadwal_periksa_detail_periksa` FOREIGN KEY (`id_jadwal`) REFERENCES `jadwal_periksa` (`id`),
-  ADD CONSTRAINT `fk_pasien_daftar_poli` FOREIGN KEY (`id_pasien`) REFERENCES `pasien` (`id`);
+  ADD CONSTRAINT `fk_jadwal_periksa_detail_periksa` FOREIGN KEY (`id_jadwal`) REFERENCES `jadwal_periksa` (`id`);
 
 --
 -- Constraints for table `detail_periksa`
