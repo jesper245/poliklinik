@@ -53,6 +53,15 @@
 		case 'detail_riwayat_pasien';
 				include 'pages/pasien/detail_riwayat_pasien.php';
 				break;
+		case 'daftar_poli';
+				include 'pages/pasien/daftar_poli.php';
+				break;	
+		case 'periksa_pasien';
+				include 'pages/pasien/periksa_pasien.php';
+				break;	
+		case 'memeriksa_pasien';
+				include 'pages/pasien/memeriksa_pasien.php';
+				break;		
 		} 
 	} else{
 		include 'pages/home.php';
