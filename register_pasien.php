@@ -48,6 +48,8 @@
   </div>
       <p class="login-box-msg">Register a new account</p>
 
+    
+
       <form action="register_pasien_proses.php" method="post">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Nama" name="nama">
@@ -97,7 +99,7 @@
           <!-- /.col -->
         </div>
       </form>
-      <a href="login.html" class="text-center">I already have an account</a>
+      <a href="login.html" class="text-center">I already have an account</a><a href="login_pasien.php">Login here</a>.</p>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->
