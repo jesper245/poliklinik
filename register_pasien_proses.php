@@ -11,7 +11,10 @@
             die(mysql_error);
         }else
         {
-            echo '<script>alert("Data Berhasil Ditambahkan !!!"); window.location.href="../../index.php?page=data_obat"</script>';
+            echo '<script> alert("Data Berhasil Ditambahkan !!!"); window.location.href="../../index.php?page=login_pasien.php"</script>';
         }
+        
+        header("Location: login_pasien.php");
     }
+   
 ?>
