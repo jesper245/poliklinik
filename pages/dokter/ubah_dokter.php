@@ -11,11 +11,11 @@ $row = mysqli_fetch_array($query);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      UBAH DATA OBAT
+      UBAH DATA DOKTER
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.php"><i class="fa fa-dashboard"></i> HOME</a></li>
-        <li class="active">UBAH OBAT</li>
+        <li class="active">UBAH DOKTER</li>
       </ol>
     </section>
 
