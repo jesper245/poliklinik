@@ -1,6 +1,6 @@
 <?php
 include  "conf/conn.php";
-$sql="SELECT * FROM obat WHERE id='".$_GET['id']."'";
+$sql="SELECT * FROM pasien WHERE id='".$_GET['id']."'";
 //echo $sql;
 $query = mysqli_query($conn,$sql);
 $row = mysqli_fetch_array($query);
@@ -11,11 +11,11 @@ $row = mysqli_fetch_array($query);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      UBAH DATA OBAT
+      UBAH DATA PASIEN
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.php"><i class="fa fa-dashboard"></i> HOME</a></li>
-        <li class="active">UBAH OBAT</li>
+        <li class="active">UBAH PASIEN</li>
       </ol>
     </section>
 
@@ -28,20 +28,28 @@ $row = mysqli_fetch_array($query);
           <div class="box box-primary">
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form" method="post" action="pages/obat/ubah_obat_proses.php">
+            <form role="form" method="post" action="pages/pasien/ubah_pasien_proses.php">
               <div class="box-body">
-                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                <input type="hidden" name="id_dokter" value="<?php echo $row['id']; ?>">
                 <div class="form-group">
-                  <label>Nama Obat</label>
-                  <input type="text" name="nama_obat" class="form-control"  value="<?php echo $row['nama_obat']; ?>" required>
+                  <label>Nama</label>
+                  <input type="text" name="nama" class="form-control"  value="<?php echo $row['nama']; ?>" required>
                 </div>
                 <div class="form-group">
-                  <label>Kemasan</label>
-                  <input type="text" name="kemasan" class="form-control" value="<?php echo $row['kemasan']; ?>" required>
+                  <label>Alamat</label>
+                  <input type="text" name="alamat" class="form-control" value="<?php echo $row['alamat']; ?>" required>
                 </div>
                 <div class="form-group">
-                  <label>Harga</label>
-                  <input type="text" name="harga" class="form-control" value="<?php echo $row['harga']; ?>" required>
+                  <label>No. HP</label>
+                  <input type="text" name="no_hp" class="form-control" value="<?php echo $row['no_hp']; ?>" required>
+                </div>
+                  <?php
+                  include  "conf/conn.php";
+                  $sql="SELECT id, nama FROM pasien";
+                  //echo $sql;
+                  $query = "SELECT id, nama FROM pasien";
+                  $result = $conn->query($query);
+               ?>
                 </div>				
               </div>
               <!-- /.box-body -->

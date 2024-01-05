@@ -3,11 +3,11 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      TAMBAH DATA OBAT
+      TAMBAH DATA PASIEN
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.php"><i class="fa fa-dashboard"></i> HOME</a></li>
-        <li class="active">TAMBAH OBAT </li>
+        <li class="active">TAMBAH PASIEN </li>
       </ol>
     </section>
     <!-- Main content -->
@@ -19,23 +19,23 @@
           <div class="box box-primary">
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form" method="post" action="pages/obat/tambah_obat_proses.php">
+            <form role="form" method="post" action="pages/pasien/tambah_pasien_proses.php">
               <div class="box-body">
                 <div class="form-group">
                   <label>ID</label>
                   <input type="text" name="id" class="form-control" placeholder="ID" required>
                 </div>
                 <div class="form-group">
-                  <label>Nama Obat</label>
-                  <input type="text" name="nama_obat" class="form-control" placeholder="Nama Obat" required>
+                  <label>Nama</label>
+                  <input type="text" name="nama" class="form-control" placeholder="nama" required>
                 </div>
                 <div class="form-group">
-                  <label>Kemasan</label>
-                  <input type="text" name="kemasan" class="form-control" placeholder="kemasan" required>
+                  <label>alamat</label>
+                  <input type="text" name="alamat" class="form-control" placeholder="alamat" required>
                 </div>
                 <div class="form-group">
-                  <label>Harga</label>
-                  <input type="text" name="harga" class="form-control" placeholder="harga" required>
+                  <label>no_hp</label>
+                  <input type="text" name="no_hp" class="form-control" placeholder="no_hp" required>
                 </div>
               </div>
               <!-- /.box-body -->

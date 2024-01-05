@@ -2,13 +2,7 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-      DATA OBAT
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> HOME</a></li>
-        <li class="active">DATA OBAT</li>
-      </ol>
+      <h1>DATA PASIEN</h1>
     </section>
 
     <!-- Main content -->
@@ -16,18 +10,41 @@
       <div class="row">
         <div class="col-xs-12">
       <div class="box box-primary">
-        <div class="box-header">
-          <a href="index.php?page=tambah_obat" class="btn btn-primary" role="button" title="Tambah Data"><i class="glyphicon glyphicon-plus"></i> Tambah</a>
-          </div>
+
+      <form role="form" method="post" action="pages/pasien/tambah_pasien_proses.php">
+              <div class="box-body">
+                <div class="form-group">
+                  <label>Nama pasien</label>
+                  <input type="text" name="nama_obat" class="form-control" placeholder="Nama Obat" required>
+                </div>
+                <div class="form-group">
+                  <label>alamat</label>
+                  <input type="text" name="kemasan" class="form-control" placeholder="kemasan" required>
+                </div>
+                <div class="form-group">
+                  <label>no hp</label>
+                  <input type="text" name="harga" class="form-control" placeholder="harga" required>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary" title="Simpan Data"> <i class="glyphicon glyphicon-floppy-disk"></i> Simpan</button>
+              </div>
+              <br>
+              <div class="box-header">
+                <button type="reset" class="btn btn-secondary" role="button" title="Reset Data" value="Reset"><i class="glyphicon glyphicon-plus"></i>Reset</a>
+              </div>
+            </form>
+            <br>
+
             <div class="box-body table-responsive">
               <table id="obat" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>#</th>
-                  <th>ID</th>
-                  <th>NAMA OBAT</th>
-                  <th>KEMASAN</th>
-                  <th>HARGA</th>
+                  <th>No.</th>
+                  <th>NAMA pasien</th>
+                  <th>alamat</th>
+                  <th>no hp</th>
                   <th>AKSI</th>
                 </tr>
                 </thead>
@@ -36,20 +53,19 @@
                 <?php
                 include "conf/conn.php";
                 $no=0;
-                $query=mysqli_query($conn,"SELECT * FROM obat ORDER BY id DESC");
+                $query=mysqli_query($conn,"SELECT * FROM pasien ORDER BY id DESC");
                 //echo $query;
                 while ($row=mysqli_fetch_array($query))
                 {
                 ?>
                 <tr>
                   <td><?php echo $no=$no+1;?></td>
-                  <td><?php echo $row['id'];?></td>
-                  <td><?php echo $row['nama_obat'];?></td>
-                  <td><?php echo $row['kemasan'];?></td>
-                  <td><?php echo $row['harga'];?></td>
+                  <td><?php echo $row['nama'];?></td>
+                  <td><?php echo $row['alamat'];?></td>
+                  <td><?php echo $row['no_hp'];?></td>
                   <td>
-                    <a href="index.php?page=ubah_obat&id=<?=$row['id'];?>" class="btn btn-success" role="button" title="Ubah Data"><i class="glyphicon glyphicon-edit"></i></a>
-                    <a href="pages/obat/hapus_obat.php?id=<?=$row['id'];?>" class="btn btn-danger" role="button" title="Hapus Data"><i class="glyphicon glyphicon-trash"></i></a>
+                    <a href="index_admin.php?page=ubah_pasien&id=<?=$row['id'];?>" class="btn btn-success" role="button" title="Ubah Data"><i class="glyphicon glyphicon-edit"></i>Ubah</a>
+                    <a href="pages/pasien/hapus_pasien.php?id=<?=$row['id'];?>" class="btn btn-danger" role="button" title="Hapus Data"><i class="glyphicon glyphicon-trash"></i>Hapus</a>
                   </td>
                 </tr>
 
@@ -73,6 +89,6 @@
 <!-- Javascript Datatable -->
 <script type="text/javascript">
   $(document).ready(function(){
-    $('#obat').DataTable();
+    $('#pasien').DataTable();
   });
 </script>

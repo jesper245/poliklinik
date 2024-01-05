@@ -1,7 +1,7 @@
 <?php
     include "../../conf/conn.php";
     $id = $_GET['id'];
-    $query = ("DELETE FROM obat WHERE id ='$id'");
+    $query = ("DELETE FROM pasien WHERE id ='$id'");
     if(!mysqli_query($conn,$query)){
         die(mysql_error);
     }else{
